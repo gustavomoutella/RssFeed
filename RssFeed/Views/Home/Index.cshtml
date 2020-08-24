@@ -1,0 +1,84 @@
+﻿@model RssFeed.Models.RssFeedViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+
+@using (Html.BeginForm())
+{
+
+    <div class="row">
+        <div class="col-md-7">
+            <h2>RSS Feed Reader</h2>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="search" style="font-weight: bold;">Text:</label>
+                <input type="text" name="Search" placeholder="Search in the RSS..." class="form-control" value="@Model.Search"
+                       style="min-width:100%" />
+            </div>
+        </div>
+        <div class="col-md-1">
+            <input type="submit" class="btn btn-danger" style="margin-top: 1.9em;" value="Search"
+                   name="btnSearch" />
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-md-11">
+            <div class="form-group">
+                <label for="url" style="font-weight: bold;">Feed Url:</label>
+                <input type="URL" name="Url" placeholder="Enter RSS Feed URL Here..." class="form-control" value="@Model.Url"
+                       style="min-width:100%" />
+            </div>
+
+        </div>
+        <div class="col-md-1">
+            <div class="form-group">
+                <input type="submit" class="btn btn-info" style="margin-top: 1.98em;" value="Submit" onclick="if (Url.value == '') { alert('Please, fill the url field.'); return false; }" />
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Error == null)
+{
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Publish Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items != null && Model.Items.Any())
+            {
+                foreach (var item in Model.Items)
+                {
+            <tr>
+                <td width="20%">@item.Title</td>
+                <td width="20%"><a href="@item.Link" target="_blank">@item.Link</a></td>
+                <td width="30%">@item.Description</td>
+                <td width="20%">@item.Author</td>
+                <td width="10%">@item.DatePublish</td>
+            </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (Model.Items == null || !Model.Items.Any())
+    {
+        <span style="color: gray;">No items found.</span>
+    }
+
+}
